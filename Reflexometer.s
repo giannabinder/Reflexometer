@@ -72,21 +72,6 @@ SUBSTRACTING        STMFD           R13!,{R5, R14}                  ; preserve L
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROVING OUR SCALING MEETS 2 TO 10 SECOND DELAY WITH +/-5% ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 1) We take the LSB of the number generated from RANDOM_NUM (R11)
-;       - it is given that this number is from 1 to 65535
-; 2) If this number is even we scale by adding. Otherwise, we scale by subtracting.
-;       a) Scaling by adding:
-;               - Since this scaling method is only called with even numbers, our lowest received random number is 2 and highest is 65,534
-;               - Thus, if we add 19,998 to our random number, the lowest delay we receive is 2+19,998 = 20,000 and the highest is 65,534+19,998 = 85,532
-;       b) Sacling by subtracting
-;               - Since this scaling method is only called with odd numbers, out lowest receives random number is 1 and highest is 65,534
-;               - Thus, if we subtract out random number from 100,001, the lowest delay we receive is 100,001-1=100,000 and the highest is 100,001-65,535=34,466
-;       - Overall, our delay spans from 20,000*0.1ms to 100,000*0.1ms = 2s to 10s exactly. 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 TURN_LED_ON         MOV             R2, #0x90000000                 ; store the instruction to turn LED 29 on in R2
                     STR             R2, [R10, #0x20]                ; turn LED 29 on
 
@@ -202,23 +187,3 @@ FIO2PIN             EQU             0x2009C054                      ; Address of
                     ALIGN
 
                     END
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;LAB REPORT QUESTIONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 
-; 1- If a 32-bit register is counting user reaction time in 0.1 milliseconds increments, what is the maximum amount of time which can be stored in 8 bits, 16-bits, 24-bits 
-;    and 32-bits?
-;       a) 8-bits:
-;           - The maximum value in decimal of an 8 bit number is 255. Thus, 255*0.1ms = 25.5ms = 0.0255s.
-;       b) 16-bits:
-;           - The maximum value in decimal of an 16 bit number is 65,535. Thus, 65,535*0.1ms = 6,553.5ms = 6.5535s.
-;       c) 24-bits:
-;           - The maximum value in decimal of an 24 bit number is 16,777,215. Thus, 167,77,215*0.1ms = 1,677,721.5ms = 1,677.7215s = 1,677.7215s * min/60s = 27.962025min
-;       d) 32-bits:
-;           - The maximum value in decimal of an 32 bit number is 4,294,967,295. Thus, 4,294,967,295*0.1ms = 429,496,729.5ms = 429,496.7295s = 429,496.7295s * min/60s = 
-;             7158.278825min = 7158.278825min * hr/60min = 119.3046471hr.
-;
-; 2- Considering typical human reaction time, which size would be the best for this task (8, 16, 24, or 32 bits)?
-;       - According to "Speedy Science: How Fast Can You React" from Scientific American, the typical human reaction time is between 150ms to 300ms = 0.150s to 0.3s. Thus,
-;         16 bit is ideal as it is the least amount of bits which spans the range.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
