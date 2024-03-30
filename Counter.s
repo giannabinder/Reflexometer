@@ -1,6 +1,4 @@
 ; ----------------------------------------------------------------------------
-; Group:      Group 9- Gianna Binder and Nain Abdi
-; File:       Lab_3_Group_9.s
 ; Purpose:    Counter
 ; ----------------------------------------------------------------------------
                     THUMB                                           ; Thumb instruction set
